@@ -13,7 +13,6 @@
         android:theme="@style/Theme.ExoPlayer">
         <activity
 
-            android:resizeableActivity="false"
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
