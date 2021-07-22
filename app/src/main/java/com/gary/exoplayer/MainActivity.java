@@ -9,17 +9,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnalyticsListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnalyticsListener, PlayerControlView.VisibilityListener {
 
     private SimpleExoPlayer simpleExoPlayer;
     private Boolean isFullScreen = false;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         playerView = findViewById(R.id.player_view);
+        playerView.setControllerVisibilityListener(this);
         ImageButton igFullScreen = playerView.findViewById(R.id.exo_fullscreen);
         igFullScreen.setOnClickListener(this);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
@@ -134,5 +137,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onPlayerError(EventTime eventTime, ExoPlaybackException error) {
+        switch (error.type) {
+
+            case ExoPlaybackException.TYPE_SOURCE:
+                // 播放器加载数据源异常
+                break;
+            case ExoPlaybackException.TYPE_RENDERER:
+                // 渲染器异常
+                break;
+            case ExoPlaybackException.TYPE_UNEXPECTED:
+                // 不被期望的异常
+                break;
+            case ExoPlaybackException.TYPE_REMOTE:
+                // 远程组件异常
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    @Override
+    public void onVisibilityChange(int visibility) {
+
+        //当你点击视频时，视频的控制器(即播放按钮，快进按钮等)被显示/隐藏时，调用此方法
     }
 }
