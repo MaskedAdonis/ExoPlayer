@@ -1,22 +1,25 @@
 package com.gary.exoplayer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AnalyticsListener {
 
     private SimpleExoPlayer simpleExoPlayer;
     private Boolean isFullScreen = false;
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ImageButton igFullScreen = playerView.findViewById(R.id.exo_fullscreen);
         igFullScreen.setOnClickListener(this);
         simpleExoPlayer = new SimpleExoPlayer.Builder(this).build();
+        simpleExoPlayer.addAnalyticsListener(this);
         playerView.setPlayer(simpleExoPlayer);
         // Build the media item.
        /* MediaItem mediaItem = MediaItem.fromUri("https://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4");
@@ -106,9 +110,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
+    public void onPlaybackStateChanged(EventTime eventTime, int state) {
 
+        switch (state) {
+            case Player.STATE_IDLE:
+                //播放器没有可播放的媒体。
+
+                break;
+            case Player.STATE_BUFFERING:
+                //播放器无法立即从当前位置开始播放。这种状态通常需要加载更多数据时发生。
+
+                break;
+            case Player.STATE_READY:
+                //播放器可以立即从当前位置开始播放。如果{@link#getPlayWhenReady（）}为true，否则暂停。
+                //当点击暂停或者播放时都会调用此方法
+                //当跳转进度时，进度加载完成后调用此方法
+                break;
+            case Player.STATE_ENDED:
+                //播放器完成了播放
+                Toast.makeText(this, "播放完成", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
 }
