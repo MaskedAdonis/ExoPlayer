@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DataSource.Factory dataSourceFactory = new DefaultHttpDataSourceFactory();
         // Create a progressive media source pointing to a stream uri.
         MediaSource mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
-                .createMediaSource(MediaItem.fromUri("https://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4"));
+                .createMediaSource(MediaItem.fromUri("  "));
         // Set the media source to be played.
         simpleExoPlayer.setMediaSource(mediaSource);
         // Prepare the player.
@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void setFullScreen() {
         if (isFullScreen) {
+            // 取消全屏
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().show();
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             playerView.setLayoutParams(params);
             isFullScreen = false;
         } else {
+            // 设置全屏
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
